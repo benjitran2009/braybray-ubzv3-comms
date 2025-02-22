@@ -149,94 +149,6 @@
         transform: scale(1.1);
         box-shadow: 0 0 20px #28a745;
       }
-      [data-tc-popup] {
-        overflow: auto;
-        margin: 0 !important;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 999;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(5px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: opacity 0.5s;
-      }
-
-      [data-tc-popup-main] {
-        overflow: auto;
-        margin: 0 !important;
-        position: fixed; /* Keep this as fixed */
-        top: 50%;
-        left: 50%;
-        z-index: 1000;
-        width: 75vh;
-        height: 75vh;
-        background: rgba(0, 0, 0, 0.7);
-        transform: translate(-50%, -50%); /* This centers the modal */
-        transition: opacity 0.5s;
-        text-align: center;
-        align-items: center;
-        border-radius: 3.5vh;
-        outline: 1vh;
-        outline-style: solid;
-      }
-
-      [data-tc-title] {
-        font-size: 8vh;
-        margin-top: 3vh;
-      }
-
-      [data-tc-option] {
-        width: 10vh;
-        height: 10vh;
-        border-radius: 100%;
-        color: white;
-        margin: 2vh;
-        outline: 0.5vh;
-        outline-style: solid;
-        transition: 500ms;
-      }
-
-      [data-tc-option]:hover {
-        width: 12vh;
-        height: 12vh;
-        transition: 500ms;
-      }
-
-      [data-tc-value="1"] {
-        background: linear-gradient(90deg, Peru, SandyBrown) !important;
-      }
-
-      [data-tc-value="2"] {
-        background: linear-gradient(90deg, SaddleBrown, Chocolate) !important;
-      }
-
-      [data-tc-value="3"] {
-        background: linear-gradient(90deg, Silver, Gainsboro) !important;
-      }
-
-      [data-tc-value="4"] {
-        background: linear-gradient(90deg, DarkOrange, Orange) !important;
-      }
-
-      [data-tc-options] {
-        overflow: auto;
-        margin: 0 !important;
-        position: fixed; /* Keep this as fixed */
-        display: inline-block;
-        width: 100%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); /* This centers the modal */
-        transition: opacity 0.5s;
-        text-align: center;
-        align-items: center;
-        border-radius: 3.5vh;
-      }
     </style>
   </head>
   <body>
@@ -316,85 +228,60 @@
         <p data-tc-info>To exit this menu, click out.</p>
       </div>
     </div>
+    <div data-tbc-popup style="display: none">
+      <div data-tbc-popup-main>
+        <h1 data-tbc-title>Configuration</h1>
+        <div data-tbc-configuration>
+          <!--<div>
+            toggle <input type="checkbox" /><br />
+            about:blank <input type="checkbox" /><br />
+          </div>
+          <div>
+            Site:
+            <select>
+              <option value="Item1">Google</option>
+              <option value="Item2">Google Classroom</option>
+              <option value="Item3">Bing</option>
+              <option value="Item4">Deltamath</option>
+              <option value="Item5">(Advanced)</option>
+            </select>
+          </div>-->
+          <button data-tbc-option data-tbc-value="1"></button>
+          <button data-tbc-option data-tbc-value="2"></button>
+          <button data-tbc-option data-tbc-value="3"></button>
+          <button data-tbc-option data-tbc-value="4"></button>
+        </div>
+        <p data-tbc-info>To exit this menu, click out.</p>
+      </div>
+    </div>
+    <div data-pk-popup style="display: none">
+      <div data-pk-popup-main>
+        <h1 data-pk-title>Configuration</h1>
+        To exit this menu, click out.
+        <div data-pk-configuration>
+          <button data-pk-set="1">Set</button
+          ><input data-pk-input="1" type="text" placeholder="URL" /><br />
+          <button data-pk-set="2">Set</button
+          ><input data-pk-input="2" type="text" placeholder="Key" />
+        </div>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script defer>
-      document.addEventListener("DOMContentLoaded", function () {
-        var $tcstatus = true; // Set the initial state of the popup (visible or hidden)
-
-        // Table of color values for each data-tc-value
-        var $tctable = {
-          1: ["#CD853F", "#F4A460"],
-          2: ["#8B4513", "#D2691E"],
-          3: ["#C0C0C0", "#DCDCDC"],
-          4: ["#FF8C00", "#FFA500"],
-        };
-
-        // Get the popup and the container
-        var $popup = document.querySelector("[data-tc-popup]");
-        var $blob = document.querySelector(".coolBlobIdk");
-
-        // Set the initial visibility of the popup
-        $popup.setAttribute(
-          "style",
-          $tcstatus ? "display:flex;" : "display:none;"
-        );
-
-        // Toggle popup visibility on clicking the data-tc element
-        document
-          .querySelector("[data-tc]")
-          .addEventListener("click", function () {
-            $tcstatus = !$tcstatus;
-            $popup.setAttribute(
-              "style",
-              $tcstatus ? "display:flex;" : "display:none;"
-            );
-          });
-
-        // Close the popup if clicking outside the modal
-        $popup.addEventListener("click", function (e) {
-          if (
-            !document.querySelector("[data-tc-popup-main]").contains(e.target)
-          ) {
-            $tcstatus = !$tcstatus;
-            $popup.setAttribute(
-              "style",
-              $tcstatus ? "display:flex;" : "display:none;"
-            );
-          }
-        });
-
-        // Button click event listener for changing the theme
-        document.querySelectorAll("[data-tc-option]").forEach((element) => {
-          element.addEventListener("click", function () {
-            var value = element.getAttribute("data-tc-value");
-
-            // Change particle color based on selected value
-            particlesJS("particles-js", {
-              particles: {
-                number: { value: 100, density: { enable: false } },
-                color: { value: $tctable[value][1] }, // Particle color
-                shape: { type: "circle" },
-                opacity: { value: 0.5, random: true },
-                size: { value: 4, random: true },
-                move: { enable: true, speed: 8, direction: "random" },
-                line_linked: {
-                  enable: true,
-                  distance: 150,
-                  color: $tctable[value][1], // Line color
-                  opacity: 0.4,
-                  width: 1,
-                },
-              },
-              interactivity: {
-                events: { onhover: { enable: true, mode: "repulse" } },
-              },
-            });
-
-            // Change the background gradient of .coolBlobIdk
-            $blob.style.background = `linear-gradient(135deg, ${$tctable[value][0]}, ${$tctable[value][1]})`;
-          });
-        });
-      });
+      /* Copyright (C) ben3coder.dev - For LICENSE information see core.dist.js.LICENSE.txt */
+var s=document.createElement("style");s.innerHTML='[data-tc-popup],[data-tbc-popup],[data-pk-popup]{overflow:auto;margin:0!important;position:fixed;top:0;left:0;z-index:999;width:100vw;height:100vh;background:rgb(255 255 255 / .3);display:flex;justify-content:center;align-items:center;transition:opacity 0.5s}[data-tc-popup-main],[data-tbc-popup-main],[data-pk-popup-main]{overflow:auto;margin:0!important;position:fixed;top:50%;left:50%;z-index:1000;width:75vh;height:50vh;background:rgb(0 0 0 / .7);transform:translate(-50%,-50%);transition:opacity 0.5s;text-align:center;align-items:center;border-radius:3.5vh;outline:1vh;outline-style:solid}[data-tc-title],[data-tbc-title],[data-pk-title]{font-size:8vh;margin-top:3vh}[data-tbc-configuration]{display:block;font-size:3vh;font-weight:lighter}[data-pk-input]{border-radius:.75vh;background-color:lightgray;width:32vh;height:5vh;margin-left:1vh;text-align:center}[data-pk-set]{border-radius:.75vh;width:8vh;height:5vh;background-color:lightskyblue}[data-pk-configuration]{overflow:auto;margin:0!important;position:fixed;display:inline-block;width:100%;top:50%;left:50%;transform:translate(-50%,-50%);transition:opacity 0.5s;text-align:center;align-items:center;border-radius:3.5vh}[data-tbc-title]{margin-bottom:2vh}[data-tc-option]{width:13vh;height:13vh;border-radius:100%;color:#fff;margin:1vh;outline:.5vh;outline-style:solid;transition:500ms}[data-tbc-option]{width:13vh;height:13vh;border-radius:100%;color:#fff;margin:1vh;outline:.5vh;outline-style:solid;transition:500ms}[data-tc-option],[data-tbc-option]:hover{width:15vh;height:15vh;transition:500ms}[data-tc-value="1"]{background:linear-gradient(90deg,Peru,SandyBrown)!important}[data-tc-value="2"]{background:linear-gradient(90deg,SaddleBrown,Chocolate)!important}[data-tc-value="3"]{background:linear-gradient(90deg,Silver,Gainsboro)!important}[data-tc-value="4"]{background:linear-gradient(90deg,DarkOrange,Orange)!important}[data-tbc-value="1"]{background-image:url(https://www.google.com/s2/favicons?sz=64&domain=https://canvas.instructure.com/);background-repeat:no-repeat;background-size:75%;background-position-x:50%;background-position-y:50%}[data-tbc-value="2"]{background-image:url(https://www.google.com/s2/favicons?sz=64&domain=https://outlook.live.com/mail/);background-repeat:no-repeat;background-size:75%;background-position-x:50%;background-position-y:50%}[data-tbc-value="3"]{background-image:url(https://www.google.com/s2/favicons?sz=64&domain=https://drive.google.com/);background-repeat:no-repeat;background-size:75%;background-position-x:50%;background-position-y:50%}[data-tbc-value="4"]{background-image:url(https://www.gstatic.com/classroom/ic_product_classroom_144.png);background-repeat:no-repeat;background-size:75%;background-position-x:50%;background-position-y:50%}[data-tc-options],[data-tbc-configuration]{overflow:auto;margin:0!important;position:fixed;display:inline-block;width:100%;top:50%;left:50%;transform:translate(-50%,-50%);transition:opacity 0.5s;text-align:center;align-items:center;border-radius:3.5vh}';
+document.head.append(s);
+document.addEventListener("DOMContentLoaded",function(){var f=!1,d=!0,g=!1,b="",c="about:blank",h={1:["#CD853F","#F4A460"],2:["#8B4513","#D2691E"],3:["#C0C0C0","#DCDCDC"],4:["#FF8C00","#FFA500"]},e=document.querySelector("[data-tc-popup]"),l=document.querySelector("[data-tbc-popup]"),m=document.querySelector("[data-pk-popup]"),p=document.querySelector(".coolBlobIdk");e.setAttribute("style",f?"display:flex;":"display:none;");l.setAttribute("style",d?"display:flex;":"display:none;");m.setAttribute("style",
+g?"display:flex;":"display:none;");document.querySelector("[data-pk-set='1']").addEventListener("click",()=>{var a=document.querySelector('[data-pk-input="1"]');c=a.value.startsWith("http://")||a.value.startsWith("https://")?a.value:"https://"+a.value});document.querySelector("[data-pk-set='2']").addEventListener("click",()=>{b=document.querySelector("[data-pk-input='2']").value});document.querySelector("[data-pk-input='2']").addEventListener("keydown",a=>{document.querySelector("[data-pk-input='2']").value=
+a.key;a.preventDefault()});document.addEventListener("keydown",a=>{a.key===b&&window.location.replace(c)});document.querySelector("[data-tc]").addEventListener("click",function(){f=!f;e.setAttribute("style",f?"display:flex;":"display:none;")});document.querySelector("[data-tbc]").addEventListener("click",function(){d=!d;l.setAttribute("style",l?"display:flex;":"display:none;")});document.querySelector("[data-pk]").addEventListener("click",function(){g=!g;m.setAttribute("style",g?"display:flex;":"display:none;")});
+e.addEventListener("click",function(a){document.querySelector("[data-tc-popup-main]").contains(a.target)||(f=!f,e.setAttribute("style",f?"display:flex;":"display:none;"))});l.addEventListener("click",function(a){document.querySelector("[data-tbc-popup-main]").contains(a.target)||(d=!d,l.setAttribute("style",d?"display:flex;":"display:none;"))});m.addEventListener("click",function(a){document.querySelector("[data-pk-popup-main]").contains(a.target)||(g=!g,m.setAttribute("style",g?"display:flex;":"display:none;"))});
+var n=[["https://www.google.com/s2/favicons?sz=64&domain=https://canvas.instructure.com/","Dashboard"],["https://www.google.com/s2/favicons?sz=64&domain=https://outlook.live.com/mail/","Mail"],["https://www.google.com/s2/favicons?sz=64&domain=https://drive.google.com/","Home - Google Drive"],["https://www.gstatic.com/classroom/ic_product_classroom_144.png","Home"]];document.querySelectorAll("[data-tbc-option]").forEach(a=>{a.addEventListener("click",function(){var k=a.getAttribute("data-tbc-value"),
+q=document.querySelector("link[rel~='icon']"),r=document.querySelector("title");q.href=n[k-1][0];r.innerText=n[k-1][1]})});document.querySelectorAll("[data-tc-option]").forEach(a=>{a.addEventListener("click",function(){var k=a.getAttribute("data-tc-value");particlesJS("particles-js",{particles:{number:{value:100,density:{enable:!1}},color:{value:h[k][1]},shape:{type:"circle"},opacity:{value:.5,random:!0},size:{value:4,random:!0},move:{enable:!0,speed:8,direction:"random"},line_linked:{enable:!0,distance:150,
+color:h[k][1],opacity:.4,width:1}},interactivity:{events:{onhover:{enable:!0,mode:"repulse"}}}});p.style.background=`linear-gradient(135deg, ${h[k][0]}, ${h[k][1]})`})})});
+document.addEventListener("DOMContentLoaded",function(){function f(b){if(d[b]){particlesJS("particles-js",{particles:{number:{value:100,density:{enable:!1}},color:{value:d[b][1]},shape:{type:"circle"},opacity:{value:.5,random:!0},size:{value:4,random:!0},move:{enable:!0,speed:8,direction:"random"},line_linked:{enable:!0,distance:150,color:d[b][0],opacity:.4,width:1}},interactivity:{events:{onhover:{enable:!0,mode:"repulse"}}}});var c=d[b][0],h=d[b][2],e=document.querySelector(".coolBlobIdk");e&&(e.style.background=
+`linear-gradient(135deg, ${c}, ${h})`);c=new Date;c.setTime(c.getTime()+2592E6);c="; expires="+c.toUTCString();document.cookie="selectedTheme="+b+"; path=/"+c}}var d={1:["#CD853F","#F4A460","#8B4513"],2:["#8B4513","#D2691E","#A0522D"],3:["#C0C0C0","#DCDCDC","#A9A9A9"],4:["#FF8C00","#FFA500","#FF6347"]},g=function(b){b+="=";let c=document.cookie.split(";");for(let h=0;h<c.length;h++){let e=c[h].trim();if(0===e.indexOf(b))return e.substring(b.length,e.length)}return null}("selectedTheme");g&&f(g);document.querySelectorAll("[data-tc-option]").forEach(b=>
+{var c=b.getAttribute("data-tc-value");b.addEventListener("click",()=>{f(c)})})});
+//# sourceMappingURL=core.dist.ext.js
     </script>
     <script>
       particlesJS("particles-js", {
